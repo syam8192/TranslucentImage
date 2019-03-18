@@ -11,6 +11,7 @@ import Cocoa
 
 protocol DropViewDelegate {
     func filesDidDrop(path: String)
+    func scrollWheel(with event: NSEvent)
 }
 
 class DropView: NSImageView {
@@ -37,6 +38,11 @@ class DropView: NSImageView {
     
     func setDropDelegate(delegate: DropViewDelegate) {
         dropDelegate = delegate
+    }
+    
+    
+    override func scrollWheel(with event: NSEvent) {
+        dropDelegate?.scrollWheel(with: event)
     }
     
 }
