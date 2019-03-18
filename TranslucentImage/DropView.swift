@@ -8,15 +8,21 @@
 
 import Cocoa
 
+
+protocol DropViewDelegate {
+    func filesDidDrop(path: String)
+}
+
 class DropView: NSImageView {
 
+    var dropDelegate: DropViewDelegate?
+    
     required init?(coder : NSCoder) {
         super.init(coder: coder)
         self.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
     }
-    
+
     override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
-        NSLog("draggingEntered");
         return NSDragOperation.generic
     }
 
@@ -25,9 +31,14 @@ class DropView: NSImageView {
             NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? [String] else {
             return false
         }
-
+        dropDelegate?.filesDidDrop(path: paths[0])
         return true;
-        
+    }
+    
+    func setDropDelegate(delegate: DropViewDelegate) {
+        dropDelegate = delegate
     }
     
 }
+
+
