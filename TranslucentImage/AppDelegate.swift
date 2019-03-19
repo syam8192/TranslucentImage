@@ -52,15 +52,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
             let tiffrep = image.tiffRepresentation,
             let bitmapImageRef = NSBitmapImageRep(data: tiffrep)
             else { return }
-        let imageSize = (bitmapImageRef.size)
-        window.setContentSize(imageSize)
         if image.isValid {
+            let imageSize = (bitmapImageRef.size)
+            window.setContentSize(imageSize)
             imageView.image = image
+            label.isHidden = true
+            window.isOpaque = false
+            window.backgroundColor = NSColor.clear
+            imageView.alphaValue = CGFloat(alpha)
+            let path = NSString(string: imagePath)
+            window.title = path.lastPathComponent
         }
-        label.isHidden = true
-        window.isOpaque = false
-        window.backgroundColor = NSColor.clear
-        imageView.alphaValue = CGFloat(alpha)
     }
 
     func filesDidDrop(path: String) {
@@ -103,4 +105,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: eraser!)
     }
     
+    @IBAction
+    func onSelect(_ sender: NSMenuItem) {
+        if (sender.state == NSControl.StateValue.on) {
+            sender.state = NSControl.StateValue.off
+            window.level = NSWindow.Level.normal
+        }
+        else {
+            sender.state = NSControl.StateValue.on
+            window.level = NSWindow.Level.floating
+        }
+    }
+
 }
