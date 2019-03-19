@@ -12,11 +12,13 @@ import Cocoa
 protocol DropViewDelegate {
     func filesDidDrop(path: String)
     func scrollWheel(with event: NSEvent)
+    func keyDown(with event: NSEvent, isShiftDown: Bool)
 }
 
 class DropView: NSImageView {
 
     var dropDelegate: DropViewDelegate?
+    var isShiftDown = false
     
     required init?(coder : NSCoder) {
         super.init(coder: coder)
@@ -40,9 +42,18 @@ class DropView: NSImageView {
         dropDelegate = delegate
     }
     
-    
     override func scrollWheel(with event: NSEvent) {
         dropDelegate?.scrollWheel(with: event)
+    }
+
+    override var acceptsFirstResponder: Bool { return true }
+    
+    override func flagsChanged(with event: NSEvent) {
+        isShiftDown = event.modifierFlags.contains([.shift])
+    }
+    
+    override func keyDown(with event: NSEvent) {
+        dropDelegate?.keyDown(with: event, isShiftDown: isShiftDown)
     }
     
 }

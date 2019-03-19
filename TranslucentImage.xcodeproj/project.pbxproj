@@ -10,7 +10,6 @@
 		C6F027C7223F620600B384DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F027C6223F620600B384DB /* AppDelegate.swift */; };
 		C6F027C9223F620800B384DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6F027C8223F620800B384DB /* Assets.xcassets */; };
 		C6F027CC223F620800B384DB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6F027CA223F620800B384DB /* MainMenu.xib */; };
-		C6F027D5223F63AC00B384DB /* MacGoGoDance.png in Resources */ = {isa = PBXBuildFile; fileRef = C6F027D4223F63AC00B384DB /* MacGoGoDance.png */; };
 		C6F027D7223F67D700B384DB /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F027D6223F67D700B384DB /* DropView.swift */; };
 /* End PBXBuildFile section */
 
@@ -21,7 +20,6 @@
 		C6F027CB223F620800B384DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		C6F027CD223F620800B384DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6F027CE223F620800B384DB /* TranslucentImage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TranslucentImage.entitlements; sourceTree = "<group>"; };
-		C6F027D4223F63AC00B384DB /* MacGoGoDance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MacGoGoDance.png; sourceTree = "<group>"; };
 		C6F027D6223F67D700B384DB /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,7 +57,6 @@
 				C6F027C8223F620800B384DB /* Assets.xcassets */,
 				C6F027CA223F620800B384DB /* MainMenu.xib */,
 				C6F027CD223F620800B384DB /* Info.plist */,
-				C6F027D4223F63AC00B384DB /* MacGoGoDance.png */,
 				C6F027CE223F620800B384DB /* TranslucentImage.entitlements */,
 				C6F027D6223F67D700B384DB /* DropView.swift */,
 			);
@@ -125,7 +122,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6F027C9223F620800B384DB /* Assets.xcassets in Resources */,
-				C6F027D5223F63AC00B384DB /* MacGoGoDance.png in Resources */,
 				C6F027CC223F620800B384DB /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
