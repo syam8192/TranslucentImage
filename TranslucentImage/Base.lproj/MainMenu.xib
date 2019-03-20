@@ -18,6 +18,9 @@
                 <outlet property="dropView" destination="y1w-dp-mnY" id="Wjq-H2-0Ng"/>
                 <outlet property="imageView" destination="7mf-yw-nFi" id="JAr-0Q-D1w"/>
                 <outlet property="label" destination="1BE-bp-G4m" id="16I-Ym-cG2"/>
+                <outlet property="menuItem_x0_5" destination="sbA-2L-8OV" id="QQn-LK-6h0"/>
+                <outlet property="menuItem_x1_0" destination="Feq-7p-GUU" id="55q-79-JVa"/>
+                <outlet property="menuItem_x2_0" destination="8ug-7y-W0b" id="ImM-4i-R3s"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -77,10 +80,27 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
                         <items>
-                            <menuItem title="Always On Top" alternate="YES" id="u6a-GP-5VM" userLabel="Always on top">
+                            <menuItem title="Always On Top" alternate="YES" keyEquivalent="t" id="u6a-GP-5VM" userLabel="Always on top">
+                                <connections>
+                                    <action selector="onSelectAlwaysOnTop:" target="Voe-Tx-rLC" id="Ke3-lW-MbM"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Eh5-Ys-lkP"/>
+                            <menuItem title="×0.5" alternate="YES" id="sbA-2L-8OV" userLabel="×0.5">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="onSelect" target="Voe-Tx-rLC" id="Lmn-CY-hOh"/>
+                                    <action selector="onSelectScale:" target="Voe-Tx-rLC" id="QiM-oD-zCz"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="×1.0" state="on" tag="1" alternate="YES" keyEquivalent="0" id="Feq-7p-GUU">
+                                <connections>
+                                    <action selector="onSelectScale:" target="Voe-Tx-rLC" id="kLk-4g-82N"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="×2.0" tag="2" alternate="YES" id="8ug-7y-W0b" userLabel="×2.0">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="onSelectScale:" target="Voe-Tx-rLC" id="7eH-49-nik"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -93,7 +113,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -101,7 +121,7 @@
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7mf-yw-nFi">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <imageCell key="cell" alignment="left" imageScaling="proportionallyDown" id="qgH-Kz-hhj"/>
+                        <imageCell key="cell" alignment="left" imageScaling="axesIndependently" id="qgH-Kz-hhj"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1BE-bp-G4m">
                         <rect key="frame" x="119" y="166" width="243" height="29"/>

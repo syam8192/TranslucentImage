@@ -10,20 +10,27 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDelegate {
-    
+
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var dropView: DropView!
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var label: NSTextField!
-    
+
+    @IBOutlet weak var menuItem_x0_5: NSMenuItem!
+    @IBOutlet weak var menuItem_x1_0: NSMenuItem!
+    @IBOutlet weak var menuItem_x2_0: NSMenuItem!
+
     enum KeyCode: UInt16 {
         case left = 0x7b
         case right = 0x7c
         case down = 0x7d
         case up = 0x7e
     }
-    
+
+    var image: NSImage?
+    var originalSize: CGSize?
     var alpha: CGFloat = 0.5
+    var scale: CGFloat = 1.0
     var eraser: DispatchWorkItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -31,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         window.delegate = self
         dropView.setDropDelegate(delegate: self)
     }
-    
+
     func initializeWindow()    {
         window.setContentSize(NSSize(width: 320, height: 320))
         let shadow = NSShadow()
@@ -46,29 +53,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         NSApp.terminate(self)
     }
 
-    func update(with imagePath: String) {
+    func update() -> Bool {
         guard
-            let image = NSImage(contentsOfFile: imagePath),
-            let tiffrep = image.tiffRepresentation,
-            let bitmapImageRef = NSBitmapImageRep(data: tiffrep)
-            else { return }
+            let image = image,
+            let originalSize = originalSize
+            else { return false }
+
         if image.isValid {
-            let imageSize = (bitmapImageRef.size)
-            window.setContentSize(imageSize)
+            let size = CGSize(width: originalSize.width * scale, height: originalSize.height * scale)
+            window.setContentSize(size)
             imageView.image = image
             label.isHidden = true
             window.isOpaque = false
             window.backgroundColor = NSColor.clear
             imageView.alphaValue = CGFloat(alpha)
-            let path = NSString(string: imagePath)
+            return true
+        }
+        return false
+    }
+
+    func filesDidDrop(path: String) {
+        guard
+            let img = NSImage(contentsOfFile: path),
+            let tiffrep = img.tiffRepresentation,
+            let bitmapImageRef = NSBitmapImageRep(data: tiffrep)
+            else { return }
+        
+        image = img
+        originalSize = bitmapImageRef.size
+        
+        if update() {
+            let path = NSString(string: path)
             window.title = path.lastPathComponent
         }
     }
 
-    func filesDidDrop(path: String) {
-        update(with: path)
-    }
-    
     func keyDown(with event: NSEvent, isShiftDown: Bool) {
         var p = window.frame.origin
         let s: CGFloat = isShiftDown ? 8.0 : 1.0
@@ -89,7 +108,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         }
         window.setFrameOrigin(p)
     }
-    
+
     func scrollWheel(with event: NSEvent) {
         alpha = max(min((alpha + event.deltaY / 10.0), 1), 0.1)
         alpha = ceil(alpha * 10) / 10
@@ -104,9 +123,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: eraser!)
     }
-    
+
     @IBAction
-    func onSelect(_ sender: NSMenuItem) {
+    func onSelectAlwaysOnTop(_ sender: NSMenuItem) {
         if (sender.state == NSControl.StateValue.on) {
             sender.state = NSControl.StateValue.off
             window.level = NSWindow.Level.normal
@@ -115,6 +134,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
             sender.state = NSControl.StateValue.on
             window.level = NSWindow.Level.floating
         }
+    }
+
+    @IBAction
+    func onSelectScale(_ sender: NSMenuItem) {
+        switch sender.tag {
+        case 0:
+            scale = 0.5
+            break;
+        case 1:
+            scale = 1.0
+            break;
+        case 2:
+            scale = 2.0
+            break;
+        default: return
+        }
+        menuItem_x0_5.state = scale == 0.5 ? NSControl.StateValue.on : NSControl.StateValue.off
+        menuItem_x1_0.state = scale == 1.0 ? NSControl.StateValue.on : NSControl.StateValue.off
+        menuItem_x2_0.state = scale == 2.0 ? NSControl.StateValue.on : NSControl.StateValue.off
+        let _ = update()
     }
 
 }
