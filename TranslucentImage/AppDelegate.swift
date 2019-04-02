@@ -61,12 +61,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
 
         if image.isValid {
             let size = CGSize(width: originalSize.width * scale, height: originalSize.height * scale)
+            let x = window.frame.minX
+            let y = window.frame.maxY
             window.setContentSize(size)
             imageView.image = image
             label.isHidden = true
             window.isOpaque = false
             window.backgroundColor = NSColor.clear
             imageView.alphaValue = CGFloat(alpha)
+            window.setFrameOrigin(CGPoint(x: x, y: y - size.height))
             return true
         }
         return false
