@@ -9,3 +9,7 @@
 - キーボードの`[shift]+カーソルキー`で、ウインドウ位置を 8 px ずつ移動します
 - `Window＞Always On Top`をチェックすると、このウインドウを常に手前に表示します
 - ウインドウを閉じると、本アプリケーションは終了します
+
+
+サンプル
+<img src="https://user-images.githubusercontent.com/1811412/55458612-671ac900-5628-11e9-890a-9a4b627ee4c5.gif"/>
