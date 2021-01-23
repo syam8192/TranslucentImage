@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -80,9 +80,15 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
                         <items>
-                            <menuItem title="Always On Top" alternate="YES" keyEquivalent="t" id="u6a-GP-5VM" userLabel="Always on top">
+                            <menuItem title="Capture" alternate="YES" keyEquivalent="c" id="u6a-GP-5VM" userLabel="Capture">
                                 <connections>
-                                    <action selector="onSelectAlwaysOnTop:" target="Voe-Tx-rLC" id="Ke3-lW-MbM"/>
+                                    <action selector="onSelectScreenCapture:" target="Voe-Tx-rLC" id="WxQ-nW-JXD"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="n92-k7-eS5"/>
+                            <menuItem title="Always On Top" alternate="YES" keyEquivalent="t" id="m6r-0v-DN5" userLabel="Always on top">
+                                <connections>
+                                    <action selector="onSelectAlwaysOnTop:" target="Voe-Tx-rLC" id="VtF-5T-R9c"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="Eh5-Ys-lkP"/>
@@ -107,13 +113,13 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="122" y="-110"/>
+            <point key="canvasLocation" x="-288" y="-208"/>
         </menu>
         <window title="TranslucentImage" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="3840" height="2137"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1792" height="1097"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -124,7 +130,7 @@
                         <imageCell key="cell" alignment="left" imageScaling="axesIndependently" id="qgH-Kz-hhj"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1BE-bp-G4m">
-                        <rect key="frame" x="119" y="166" width="243" height="29"/>
+                        <rect key="frame" x="116" y="166" width="248" height="28"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="画像ファイルをドロップ" id="pzG-BC-bNB">
                             <font key="font" metaFont="systemBold" size="24"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -141,6 +147,7 @@
                     <constraint firstItem="1BE-bp-G4m" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="yW0-6H-m1B"/>
                 </constraints>
             </view>
+            <point key="canvasLocation" x="-163" y="147"/>
         </window>
     </objects>
 </document>

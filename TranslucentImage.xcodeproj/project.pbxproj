@@ -11,6 +11,9 @@
 		C6F027C9223F620800B384DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6F027C8223F620800B384DB /* Assets.xcassets */; };
 		C6F027CC223F620800B384DB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6F027CA223F620800B384DB /* MainMenu.xib */; };
 		C6F027D7223F67D700B384DB /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F027D6223F67D700B384DB /* DropView.swift */; };
+		C6F70FFE25B93B9300C3C78A /* CaptureWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6F70FFD25B93B9300C3C78A /* CaptureWindow.xib */; };
+		C6F7100125B93C9400C3C78A /* CaptureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7100025B93C9400C3C78A /* CaptureController.swift */; };
+		C6F7100425B9663200C3C78A /* DragRectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F7100325B9663200C3C78A /* DragRectView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +24,9 @@
 		C6F027CD223F620800B384DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C6F027CE223F620800B384DB /* TranslucentImage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TranslucentImage.entitlements; sourceTree = "<group>"; };
 		C6F027D6223F67D700B384DB /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
+		C6F70FFD25B93B9300C3C78A /* CaptureWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CaptureWindow.xib; sourceTree = "<group>"; };
+		C6F7100025B93C9400C3C78A /* CaptureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureController.swift; sourceTree = "<group>"; };
+		C6F7100325B9663200C3C78A /* DragRectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragRectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,11 +60,14 @@
 			isa = PBXGroup;
 			children = (
 				C6F027C6223F620600B384DB /* AppDelegate.swift */,
-				C6F027C8223F620800B384DB /* Assets.xcassets */,
-				C6F027CA223F620800B384DB /* MainMenu.xib */,
-				C6F027CD223F620800B384DB /* Info.plist */,
-				C6F027CE223F620800B384DB /* TranslucentImage.entitlements */,
+				C6F7100025B93C9400C3C78A /* CaptureController.swift */,
 				C6F027D6223F67D700B384DB /* DropView.swift */,
+				C6F7100325B9663200C3C78A /* DragRectView.swift */,
+				C6F027CA223F620800B384DB /* MainMenu.xib */,
+				C6F70FFD25B93B9300C3C78A /* CaptureWindow.xib */,
+				C6F027CD223F620800B384DB /* Info.plist */,
+				C6F027C8223F620800B384DB /* Assets.xcassets */,
+				C6F027CE223F620800B384DB /* TranslucentImage.entitlements */,
 			);
 			path = TranslucentImage;
 			sourceTree = "<group>";
@@ -123,6 +132,7 @@
 			files = (
 				C6F027C9223F620800B384DB /* Assets.xcassets in Resources */,
 				C6F027CC223F620800B384DB /* MainMenu.xib in Resources */,
+				C6F70FFE25B93B9300C3C78A /* CaptureWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +143,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6F7100425B9663200C3C78A /* DragRectView.swift in Sources */,
+				C6F7100125B93C9400C3C78A /* CaptureController.swift in Sources */,
 				C6F027C7223F620600B384DB /* AppDelegate.swift in Sources */,
 				C6F027D7223F67D700B384DB /* DropView.swift in Sources */,
 			);
@@ -274,11 +286,13 @@
 				CODE_SIGN_ENTITLEMENTS = TranslucentImage/TranslucentImage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = TranslucentImage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.syam64.test.TranslucentImage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -292,11 +306,13 @@
 				CODE_SIGN_ENTITLEMENTS = TranslucentImage/TranslucentImage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = TranslucentImage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.syam64.test.TranslucentImage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

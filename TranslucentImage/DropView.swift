@@ -8,30 +8,27 @@
 
 import Cocoa
 
-
 protocol DropViewDelegate {
     func filesDidDrop(path: String)
     func scrollWheel(with event: NSEvent)
-    func keyDown(with event: NSEvent, isShiftDown: Bool)
+    func keyDown(with event: NSEvent)
 }
 
 class DropView: NSImageView {
-
+    
     var dropDelegate: DropViewDelegate?
-    var isShiftDown = false
     
     required init?(coder : NSCoder) {
         super.init(coder: coder)
         self.registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
     }
-
+    
     override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
         return NSDragOperation.generic
     }
-
+    
     override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
-        guard let paths: [String] = sender.draggingPasteboard.propertyList(forType:
-            NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? [String] else {
+        guard let paths: [String] = sender.draggingPasteboard.propertyList(forType: NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")) as? [String] else {
             return false
         }
         dropDelegate?.filesDidDrop(path: paths[0])
@@ -45,15 +42,11 @@ class DropView: NSImageView {
     override func scrollWheel(with event: NSEvent) {
         dropDelegate?.scrollWheel(with: event)
     }
-
+    
     override var acceptsFirstResponder: Bool { return true }
     
-    override func flagsChanged(with event: NSEvent) {
-        isShiftDown = event.modifierFlags.contains([.shift])
-    }
-    
     override func keyDown(with event: NSEvent) {
-        dropDelegate?.keyDown(with: event, isShiftDown: isShiftDown)
+        dropDelegate?.keyDown(with: event)
     }
     
 }
