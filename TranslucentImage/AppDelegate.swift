@@ -222,11 +222,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
             width: rect.width,
             height: rect.height
         )
-        let cgImage: CGImage = CGWindowListCreateImage(
-            capRect,
-            option,
-            relativeToWindow,
-            [.boundsIgnoreFraming, .nominalResolution])!
+        let cgImage: CGImage = CGWindowListCreateImage(capRect, option, relativeToWindow, [.nominalResolution])!
         
         originalSize = CGSize(width: cgImage.width, height: cgImage.height)
         image = NSImage(cgImage: cgImage, size: originalSize!)
