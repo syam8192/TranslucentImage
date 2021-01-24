@@ -12,6 +12,7 @@ protocol DropViewDelegate {
     func filesDidDrop(path: String)
     func scrollWheel(with event: NSEvent)
     func keyDown(with event: NSEvent)
+    func flagsChanged(with event: NSEvent)
 }
 
 class DropView: NSImageView {
@@ -44,6 +45,10 @@ class DropView: NSImageView {
     }
     
     override var acceptsFirstResponder: Bool { return true }
+    
+    override func flagsChanged(with event: NSEvent) {
+        dropDelegate?.flagsChanged(with: event)
+    }
     
     override func keyDown(with event: NSEvent) {
         dropDelegate?.keyDown(with: event)

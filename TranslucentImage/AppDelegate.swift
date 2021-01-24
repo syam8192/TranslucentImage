@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var dropView: DropView!
     @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var differenceImageView: NSImageView!
     @IBOutlet weak var label: NSTextField!
     
     @IBOutlet weak var menuItem_x0_5: NSMenuItem!
@@ -97,8 +98,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         changeWindowPosition(with: event)
     }
     
+    func flagsChanged(with event: NSEvent) {
+        // マウスのドラッグ中はflagsChanged()が呼ばれない模様.
+        updateDifferenceImage()
+    }
+    
     func scrollWheel(with event: NSEvent) {
-        if NSEvent.modifierFlags == .control {
+        if NSEvent.modifierFlags.contains(.control) {
             changeScale(with: event)
         } else {
             changeTranslucent(with: event)
@@ -147,6 +153,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         updateScale()
     }
     
+    func windowDidMove(_ notification: Notification) {
+        updateDifferenceImage()
+    }
+    
     private func changeScale(with event: NSEvent) {
         let delta: CGFloat = (event.deltaY > 0) ? 0.5 : -0.5
         scale = max(min(scale + delta, 2), 0.5)
@@ -191,6 +201,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         default: return
         }
         window.setFrameOrigin(p)
+        updateDifferenceImage()
     }
     
     private func updateScale() {
@@ -207,29 +218,66 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         captureController?.close()
         if let rect = rect, rect.width > 64.0, rect.height > 64.0 {
             DispatchQueue.main.async { [weak self] in
-                self?.capture(rect: rect)
+                self?.setCapturedImage(rect: rect)
             }
         }
     }
     
-    private func capture(rect: CGRect) {
-        guard let screen = window.screen else { return }
-        let option: CGWindowListOption = CGWindowListOption.optionOnScreenOnly
-        let relativeToWindow: CGWindowID = (CGWindowID(0))
-        let capRect = CGRect(
-            x: rect.minX + screen.visibleFrame.minX,
-            y: screen.frame.height - rect.maxY + screen.visibleFrame.minY,
-            width: rect.width,
-            height: rect.height
-        )
-        let cgImage: CGImage = CGWindowListCreateImage(capRect, option, relativeToWindow, [.nominalResolution])!
-        
-        originalSize = CGSize(width: cgImage.width, height: cgImage.height)
-        image = NSImage(cgImage: cgImage, size: originalSize!)
-        
+    private func setCapturedImage(rect: CGRect) {
+        guard let capImage = capture(rect: rect) else { return }
+        originalSize = CGSize(width: capImage.width, height: capImage.height)
+        image = NSImage(cgImage: capImage, size: originalSize!)
         if update() {
             window.title = "Captured"
         }
+    }
+    
+    private func updateDifferenceImage() {
+        if NSEvent.modifierFlags.contains(.option),
+           let diffImage = getDifferenceImage() {
+            differenceImageView.image = diffImage
+            differenceImageView.isHidden = false
+        } else {
+            differenceImageView.image = nil
+            differenceImageView.isHidden = true
+        }
+    }
+    
+    private func getDifferenceImage() -> NSImage? {
+        let rect = window.convertToScreen(imageView.frame)
+        if let capImage = self.capture(rect: rect),
+           let currentImage = imageView.image {
+            let destImage = NSImage(cgImage: capImage, size: self.imageView.frame.size)
+            destImage.lockFocus()
+            currentImage.draw(in: CGRect(origin: CGPoint.zero, size: destImage.size),
+                              from: CGRect(origin: CGPoint.zero, size: currentImage.size),
+                              operation: .difference,
+                              fraction: 1)
+            destImage.unlockFocus()
+            return destImage
+        }
+        return nil
+    }
+    
+    private func capture(rect: CGRect) -> CGImage? {
+        guard let screen = window.screen else { return nil }
+        let option: CGWindowListOption = CGWindowListOption.optionOnScreenBelowWindow
+        let relativeToWindow: CGWindowID = (CGWindowID(window.windowNumber))
+        let capRect = CGRect(
+            x: rect.minX + screen.frame.minX,
+            y: screen.frame.height - rect.maxY + screen.frame.minY,
+            width: rect.width,
+            height: rect.height
+        )
+        
+        // ??? 
+        //        let capRect = CGRect(
+        //            x: rect.minX + screen.visibleFrame.minX,
+        //            y: screen.frame.height - rect.maxY + screen.visibleFrame.minY,
+        //            width: rect.width,
+        //            height: rect.height
+        //        )
+        return CGWindowListCreateImage(capRect, option, relativeToWindow, [.nominalResolution])!
     }
     
 }
@@ -250,5 +298,15 @@ extension CGRect {
             y: height - self.maxY,
             width: self.width,
             height: self.height)
+    }
+}
+
+extension NSImage {
+    var toCGImage: CGImage {
+        var imageRect = NSRect(x: 0, y: 0, width: size.width, height: size.height)
+        guard let image =  cgImage(forProposedRect: &imageRect, context: nil, hints: nil) else {
+            abort()
+        }
+        return image
     }
 }
