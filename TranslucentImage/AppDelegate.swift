@@ -248,7 +248,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
     }
     
     private func getDifferenceImage() -> NSImage? {
-        let rect = window.convertToScreen(imageView.frame)
+        
+        guard let screen = window.screen else { return nil }
+        let rectInscreen = window.convertToScreen(imageView.frame)
+        let rect = CGRect(
+            origin: CGPoint(x: rectInscreen.minX - screen.frame.minX, y: rectInscreen.minY - screen.frame.minY),
+            size: rectInscreen.size
+        )
+        
         if let capImage = self.capture(rect: rect),
            let currentImage = imageView.image {
             let destImage = NSImage(cgImage: capImage, size: self.imageView.frame.size)
@@ -267,20 +274,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         guard let screen = window.screen else { return nil }
         let option: CGWindowListOption = CGWindowListOption.optionOnScreenBelowWindow
         let relativeToWindow: CGWindowID = (CGWindowID(window.windowNumber))
+
         let capRect = CGRect(
-            x: rect.minX + screen.frame.minX,
+            x: rect.minX + screen.visibleFrame.minX,
             y: screen.frame.height - rect.maxY + screen.frame.minY,
             width: rect.width,
             height: rect.height
         )
-        
-        // ??? 
-        //        let capRect = CGRect(
-        //            x: rect.minX + screen.visibleFrame.minX,
-        //            y: screen.frame.height - rect.maxY + screen.visibleFrame.minY,
-        //            width: rect.width,
-        //            height: rect.height
-        //        )
         return CGWindowListCreateImage(capRect, option, relativeToWindow, [.nominalResolution])!
     }
     

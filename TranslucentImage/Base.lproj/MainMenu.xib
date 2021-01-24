@@ -140,9 +140,9 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8xw-J5-hPQ">
-                        <rect key="frame" x="18" y="20" width="444" height="98"/>
+                        <rect key="frame" x="18" y="20" width="246" height="98"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" id="rHp-C8-CWi">
-                            <font key="font" metaFont="system" size="11"/>
+                            <font key="font" metaFont="smallSystem"/>
                             <string key="title">その他の操作方法
 - [カーソルキー]：ウインドウを 1 px 移動
 - [Shift] + [カーソルキー]：ウインドウを 8 px 移動
@@ -165,7 +165,6 @@
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="8xw-J5-hPQ" secondAttribute="trailing" constant="20" id="5VZ-qj-y4N"/>
                     <constraint firstAttribute="bottom" secondItem="8xw-J5-hPQ" secondAttribute="bottom" constant="20" id="Ej2-jO-uy0"/>
                     <constraint firstItem="8xw-J5-hPQ" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="KUE-uW-sZh"/>
                     <constraint firstItem="8xw-J5-hPQ" firstAttribute="top" secondItem="1BE-bp-G4m" secondAttribute="bottom" constant="60" id="rUa-ml-xzT"/>
