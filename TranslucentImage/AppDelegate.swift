@@ -16,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var differenceImageView: NSImageView!
     @IBOutlet weak var label: NSTextField!
+    @IBOutlet weak var usageLabel: NSTextField!
     
     @IBOutlet weak var menuItem_x0_5: NSMenuItem!
     @IBOutlet weak var menuItem_x1_0: NSMenuItem!
@@ -69,6 +70,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
             window.setContentSize(size)
             imageView.image = image
             label.isHidden = true
+            usageLabel.isHidden = true
             window.isOpaque = false
             window.backgroundColor = NSColor.clear
             imageView.alphaValue = CGFloat(alpha)
@@ -104,6 +106,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
     }
     
     func scrollWheel(with event: NSEvent) {
+        guard let _ = imageView.image else { return }
+        if event.deltaY == 0 { return }
         if NSEvent.modifierFlags.contains(.control) {
             changeScale(with: event)
         } else {

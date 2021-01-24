@@ -22,6 +22,7 @@
                 <outlet property="menuItem_x0_5" destination="sbA-2L-8OV" id="QQn-LK-6h0"/>
                 <outlet property="menuItem_x1_0" destination="Feq-7p-GUU" id="55q-79-JVa"/>
                 <outlet property="menuItem_x2_0" destination="8ug-7y-W0b" id="ImM-4i-R3s"/>
+                <outlet property="usageLabel" destination="8xw-J5-hPQ" id="FYc-t7-zk8"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -131,10 +132,25 @@
                         <imageCell key="cell" alignment="left" imageScaling="axesIndependently" id="qgH-Kz-hhj"/>
                     </imageView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1BE-bp-G4m">
-                        <rect key="frame" x="116" y="166" width="248" height="28"/>
+                        <rect key="frame" x="116" y="178" width="248" height="28"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="画像ファイルをドロップ" id="pzG-BC-bNB">
                             <font key="font" metaFont="systemBold" size="24"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8xw-J5-hPQ">
+                        <rect key="frame" x="18" y="20" width="444" height="98"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" id="rHp-C8-CWi">
+                            <font key="font" metaFont="system" size="11"/>
+                            <string key="title">その他の操作方法
+- [カーソルキー]：ウインドウを 1 px 移動
+- [Shift] + [カーソルキー]：ウインドウを 8 px 移動
+- [マウスホイール]：透明度を変更
+- [control]+[マウスホイール]：スケールを変更
+- [control]+[c]：現在の画面からキャプチャ
+- [option]：差分表示</string>
+                            <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -149,7 +165,10 @@
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="1BE-bp-G4m" firstAttribute="centerY" secondItem="EiT-Mj-1SZ" secondAttribute="centerY" id="Wkl-9N-LWv"/>
+                    <constraint firstAttribute="trailing" secondItem="8xw-J5-hPQ" secondAttribute="trailing" constant="20" id="5VZ-qj-y4N"/>
+                    <constraint firstAttribute="bottom" secondItem="8xw-J5-hPQ" secondAttribute="bottom" constant="20" id="Ej2-jO-uy0"/>
+                    <constraint firstItem="8xw-J5-hPQ" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="KUE-uW-sZh"/>
+                    <constraint firstItem="8xw-J5-hPQ" firstAttribute="top" secondItem="1BE-bp-G4m" secondAttribute="bottom" constant="60" id="rUa-ml-xzT"/>
                     <constraint firstItem="1BE-bp-G4m" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="yW0-6H-m1B"/>
                 </constraints>
             </view>
