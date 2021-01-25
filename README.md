@@ -2,6 +2,8 @@
 
 画像を半透明にして表示します. 要 `macOS High Sierra以降`.
 
+<a href="https://github.com/syam8192/TranslucentImage/releases/download/1.2-alpha/TranslucentImage_1_2alpha.zip">ダウンロード - v1.2+alpha</a>
+
 - 最初に開いたウインドウに画像ファイルをドロップすると、その画像を表示します
 - 以後も、画像ファイルをドロップすると、その画像に切り替わります
 - `Window＞Capture`を選択するか、`[Command]+[C]`でキャプチャモードになります
