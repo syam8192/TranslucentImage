@@ -53,6 +53,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         window.makeFirstResponder(dropView)
     }
     
+    func windowDidResize(_ notification: Notification) {
+        guard let image = imageView.image else { return }
+        scale = imageView.frame.size.width / image.size.width
+        updateScaleSelection()
+    }
+    
     func windowWillClose(_ notification: Notification) {
         NSApp.terminate(self)
     }
@@ -69,12 +75,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
             let y = window.frame.maxY
             window.setContentSize(size)
             imageView.image = image
-            label.isHidden = true
             usageLabel.isHidden = true
             window.isOpaque = false
             window.backgroundColor = NSColor.clear
             imageView.alphaValue = CGFloat(alpha)
             window.setFrameOrigin(CGPoint(x: x, y: y - size.height))
+            window.styleMask.insert(.resizable)
+            window.aspectRatio = CGSize(width: image.size.width, height: image.size.height + window.titlebarHeight)
             return true
         }
         return false
@@ -93,6 +100,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         if update() {
             let path = NSString(string: path)
             window.title = path.lastPathComponent
+            label.isHidden = true
         }
     }
     
@@ -161,6 +169,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         updateDifferenceImage()
     }
     
+    private func showText(_ text: String) {
+        label.stringValue = text
+        label.isHidden = false
+        if eraser != nil {
+            eraser?.cancel()
+        }
+        eraser = DispatchWorkItem() {
+            self.label.isHidden = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: eraser!)
+    }
+    
     private func changeScale(with event: NSEvent) {
         let delta: CGFloat = (event.deltaY > 0) ? 0.5 : -0.5
         scale = max(min(scale + delta, 2), 0.5)
@@ -171,15 +191,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         let iAlpha: Int = max(min(Int(alpha * 10) + ((event.deltaY > 0) ? 1 : -1), 10), 1)
         alpha = CGFloat(iAlpha) / 10.0
         imageView.alphaValue = alpha
-        label.stringValue = "\(Int(alpha * 100))%"
-        label.isHidden = false
-        if eraser != nil {
-            eraser?.cancel()
-        }
-        eraser = DispatchWorkItem() {
-            self.label.isHidden = true
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: eraser!)
+        showText("不透明度\n\(Int(alpha * 100))%")
     }
     
     private func changeWindowPosition(with event: NSEvent) {
@@ -209,12 +221,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
     }
     
     private func updateScale() {
-        menuItem_x0_5.state = scale == 0.5 ? NSControl.StateValue.on : NSControl.StateValue.off
-        menuItem_x1_0.state = scale == 1.0 ? NSControl.StateValue.on : NSControl.StateValue.off
-        menuItem_x2_0.state = scale == 2.0 ? NSControl.StateValue.on : NSControl.StateValue.off
+        updateScaleSelection()
         let oldCenter = window.center
         let _ = update()
         window.center = oldCenter
+    }
+    
+    private func updateScaleSelection() {
+        menuItem_x0_5.state = scale == 0.5 ? NSControl.StateValue.on : NSControl.StateValue.off
+        menuItem_x1_0.state = scale == 1.0 ? NSControl.StateValue.on : NSControl.StateValue.off
+        menuItem_x2_0.state = scale == 2.0 ? NSControl.StateValue.on : NSControl.StateValue.off
+        showText("スケール\n\(Int(scale * 100))%")
     }
     
     func choosedRect(_ rect: CGRect?) {
@@ -274,7 +291,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         guard let screen = window.screen else { return nil }
         let option: CGWindowListOption = CGWindowListOption.optionOnScreenBelowWindow
         let relativeToWindow: CGWindowID = (CGWindowID(window.windowNumber))
-
+        
         let capRect = CGRect(
             x: rect.minX + screen.visibleFrame.minX,
             y: screen.frame.height - rect.maxY + screen.frame.minY,
@@ -293,6 +310,11 @@ extension NSWindow {
             self.setFrameOrigin(CGPoint(x: newValue.x - frame.width / 2.0, y: newValue.y - frame.height / 2.0))
         }
     }
+    var titlebarHeight: CGFloat {
+        let contentHeight = contentRect(forFrameRect: frame).height
+        return frame.height - contentHeight
+    }
+    
 }
 
 extension CGRect {
