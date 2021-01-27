@@ -249,7 +249,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         originalSize = CGSize(width: capImage.width, height: capImage.height)
         image = NSImage(cgImage: capImage, size: originalSize!)
         if update() {
-            window.title = "Captured"
+            window.title = "Captured - \(capImage.width)x\(capImage.height)"
+            label.isHidden = true
         }
     }
     
