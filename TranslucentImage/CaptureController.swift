@@ -47,7 +47,21 @@ class CaptureController: NSWindowController, NSWindowDelegate, DragRectViewDeleg
     }
     
     func dragRectView(_ view: DragRectView, choosed: CGRect?) {
-        delegate?.choosedRect(choosed)
+        guard let win = window, let rect = choosed else {
+            delegate?.choosedRect(choosed)
+            return
+        }
+        let rectInWindow = view.convert(rect, to: nil)
+        var rectInScreen = win.convertToScreen(rectInWindow)
+        if let screen = win.screen, screen != NSScreen.main {
+            rectInScreen = CGRect(
+                x: rectInScreen.minX + screen.frame.minX,
+                y: rectInScreen.minY + screen.frame.minY,
+                width: rectInScreen.width,
+                height: rectInScreen.height
+            )
+        }
+        delegate?.choosedRect(rectInScreen)
     }
     
 }

@@ -266,15 +266,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
     }
     
     private func getDifferenceImage() -> NSImage? {
+        guard window.screen != nil else { return nil }
+        let rectInScreen = window.convertToScreen(imageView.frame)
         
-        guard let screen = window.screen else { return nil }
-        let rectInscreen = window.convertToScreen(imageView.frame)
-        let rect = CGRect(
-            origin: CGPoint(x: rectInscreen.minX - screen.frame.minX, y: rectInscreen.minY - screen.frame.minY),
-            size: rectInscreen.size
-        )
-        
-        if let capImage = self.capture(rect: rect),
+        if let capImage = self.capture(rect: CGRect(x: rectInScreen.minX, y: rectInScreen.minY, width: rectInScreen.width, height: rectInScreen.height)),
            let currentImage = imageView.image {
             let destImage = NSImage(cgImage: capImage, size: self.imageView.frame.size)
             destImage.lockFocus()
@@ -288,18 +283,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, DropViewDe
         return nil
     }
     
+    /// rect: Cocoa の画面（グローバル）座標。CGWindowListCreateImage は Quartz（左上原点）座標を要求するため変換する。
+    /// オーバーレイは常に window.screen 上にある。セカンダリを縦中央揃えにしていると、その画面の「上端」の
+    /// Quartz Y は 0 ではないため、CGDisplayBounds で正しいオフセットを取得する。
     private func capture(rect: CGRect) -> CGImage? {
         guard let screen = window.screen else { return nil }
         let option: CGWindowListOption = CGWindowListOption.optionOnScreenBelowWindow
         let relativeToWindow: CGWindowID = (CGWindowID(window.windowNumber))
-        
+        // NSScreen からディスプレイ ID を取得し、Quartz 座標系でのその画面の bounds を得る
+        let displayID: CGDirectDisplayID = {
+            if let num = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber {
+                return CGDirectDisplayID(num.uint32Value)
+            }
+            return 0
+        }()
+        let cgBounds = displayID != 0 ? CGDisplayBounds(displayID) : CGRect(x: 0, y: 0, width: screen.frame.width, height: screen.frame.height)
+        // Quartz: 原点はディスプレイ左上。Cocoa: 原点はディスプレイ左下。cgBounds.minY がこの画面の上端の Quartz 座標。
         let capRect = CGRect(
-            x: rect.minX + screen.visibleFrame.minX,
-            y: screen.frame.height - rect.maxY + screen.frame.minY,
+            x: rect.minX,
+            y: cgBounds.minY + (screen.frame.maxY - rect.maxY),
             width: rect.width,
             height: rect.height
         )
-        return CGWindowListCreateImage(capRect, option, relativeToWindow, [.nominalResolution])!
+        guard let image = CGWindowListCreateImage(capRect, option, relativeToWindow, [.nominalResolution]) else { return nil }
+        return image
     }
     
 }
